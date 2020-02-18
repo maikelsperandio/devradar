@@ -25,7 +25,7 @@ module.exports = {
                 type: 'Point',
                 coordinates: [longitude, latitude]
             }
-        
+
             dev = await Dev.create({
                 github_username,
                 name,
@@ -35,8 +35,19 @@ module.exports = {
                 location
             })
         }
-    
-    
+        return res.json(dev)
+    },
+
+    async show(req, res) {
+        const dev = await Dev.findOne({github_username: req.params.username})
+        if(!dev)
+            return res.json({message:'Desenvolvedor não encontrado'})
+        else
+            return res.json(dev)
+    },
+
+    async destroy(req, res){
+        const dev = await Dev.deleteOne({github_username: req.params.username})
         return res.json(dev)
     }
 }
