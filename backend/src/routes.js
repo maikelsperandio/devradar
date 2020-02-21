@@ -4,10 +4,12 @@ const SearchController = require('./controllers/SearchController')
 
 const routes = Router()
 
-routes.get('/devs', DevController.index)
 routes.post('/devs', DevController.store)
+    .get('/devs', DevController.index)
+
 routes.get('/devs/:username', DevController.show)
-routes.delete('/devs/:username', DevController.destroy)
+    .delete('/devs/:username', DevController.destroy)
+    .put('/devs/:username', DevController.update)
 
 routes.get('/search', SearchController.index)
 

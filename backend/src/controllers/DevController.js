@@ -38,6 +38,26 @@ module.exports = {
         return res.json(dev)
     },
 
+    async update(req, res){
+        const {techs, latitude, longitude} = req.body
+        const github_username = req.params.username
+
+        const respGit = await axios.get(`https://api.github.com/users/${github_username}`)
+        const {name = login, avatar_url, bio} = respGit.data;
+        const techsArray = parseStringAsArray(techs)
+        const location = {
+            type: 'Point',
+            coordinates: [longitude, latitude]
+        }
+        let result = await Dev.updateOne(
+            {github_username},
+            {
+                $set: {name, avatar_url, bio, 'techs': techsArray, location }
+            }
+        )
+        return res.json(result)
+    },
+
     async show(req, res) {
         const dev = await Dev.findOne({github_username: req.params.username})
         if(!dev)
