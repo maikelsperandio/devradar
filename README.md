@@ -19,7 +19,7 @@ This project consists in a radar of developers and technologies where a user can
 Look at [backend/README.md](./backend) for more details about the Backend and the architecture.
 
 ## Frontend (Not implemented yet)
-Look at [frontend/README.md](./frontend) for more details about the Frontend and the patterns.
+Look at [frontend/README.md](./web) for more details about the Frontend and the patterns.
 
 ## Mobile (Not implemented yet)
 
