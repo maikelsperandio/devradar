@@ -44,15 +44,26 @@ module.exports = {
 
         const respGit = await axios.get(`https://api.github.com/users/${github_username}`)
         const {name = login, avatar_url, bio} = respGit.data;
-        const techsArray = parseStringAsArray(techs)
-        const location = {
-            type: 'Point',
-            coordinates: [longitude, latitude]
+
+        if(techs)
+            var techsArray = parseStringAsArray(techs)
+
+        if(latitude && longitude){
+            var location = {
+                type: 'Point',
+                coordinates: [longitude, latitude]
+            }
         }
         let result = await Dev.updateOne(
             {github_username},
             {
-                $set: {name, avatar_url, bio, 'techs': techsArray, location }
+                $set: {
+                    name, 
+                    avatar_url, 
+                    bio, 
+                    'techs': techs ? techsArray : dev.techs, 
+                    location: (latitude&&longitude) ? location : dev.location 
+                }
             }
         )
         return res.json(result)
@@ -68,6 +79,10 @@ module.exports = {
 
     async destroy(req, res){
         const dev = await Dev.deleteOne({github_username: req.params.username})
-        return res.json(dev)
+        if(dev.deletedCount == 1)
+            return res.json({message:'Desenvolvedor excluído com sucesso'})
+        else{
+            return res.json({message:'Nenhum desenvolvedor excluído'})
+        }
     }
 }
